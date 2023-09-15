@@ -9,11 +9,12 @@ import java.sql.Statement;
 public class QueryPerformance {
 
     public static void main(String[] args) {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/annotated_db";
-        String username = "your_username";
-        String password = "your_password";
+        String jdbcUrl = "jdbc:mysql://localhost:3306/MP1_DB";
+        String username = "dba";
+        String password = "password";
 
         int[] instanceSizes = {10, 100, 1000, 10000}; // Define the instance sizes to test
+
 
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
@@ -50,14 +51,12 @@ public class QueryPerformance {
 
     // Execute the query
     private static void executeQuery(Connection connection) throws SQLException {
-        String query = "INSERT INTO T (A2, A3, B2, B3, K) " +
-                "SELECT R.A2, R.A3, S.B2, S.B3, CONCAT('R.I=', R.I, ', S.J=', S.J) AS K " +
-                "FROM R INNER JOIN S ON R.A2 = S.B2 AND R.A3 = S.B3";
-
+        String query = "CREATE TABLE TableC AS " +
+                       "SELECT R.A2, R.A3, S.B2, S.B3, CONCAT('R.I=', R.I, ', S.J=', S.J) AS K " +
+                       "FROM R INNER JOIN S ON R.A2 = S.B2 AND R.A3 = S.B3";
+        
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
 }
-
-
